@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Profile page</title>
+    {% endblock %}
+
+{% block content %}
+    <div>
+    {% if messages %}
+        <ul>
+            {% for msg in messages %}
+                <li {% if msg.tags %} class="alert alert-{{ msg.tags }}"{% endif %}>{{ msg }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col col-md-5">
+                <img height="200" width="150" src="" style="border-radius: 50%;">
+            </div>
+            <div class="col col-md-6" style="font-size:20px; font-weight:bold">Hello {{ user.username }},<br> Mail: {{ user.email }} <br> Your full name: {{ user.first_name }} {{ user.last_name }}</div>
+        </div>
+    </div>
+{% endblock %}

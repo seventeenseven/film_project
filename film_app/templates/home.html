@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Home page</title>
+    {% endblock %}
+
+{% block content %}
+    <div>
+    {% if messages %}
+        <ul>
+            {% for msg in messages %}
+                <li {% if msg.tags %} class="alert alert-{{ msg.tags }}"{% endif %}>{{ msg }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    </div>
+    <div class="container">
+        HOMEPAGE
+        <h1 class="text-center"><span>All the films  <i class="fa fa-film"></i></span></h1><br>
+        <div class="row">
+            {% for film in films %}
+    		<div class="col-md-4">
+    		    <div class="card profile-card-1">
+    		        <img width="200" height="150" src="{{ film.cover_image.url }}" alt="profile-sample1" class="background"/>
+                    <div class="card-content">
+                    <h2>{{ film.title }}</h2>
+                        <small>Date: {{ film.release_date }}</small><br>
+                        <small>Category: {{ film.category.name }}</small><br>
+                        <small>Country: {{ film.country.name }}</small><br>
+
+                        {% for director in directors %}
+                            {% if director.film.id == film.id %}
+                            <small>Directed by: {{ director.first_name }} {{ director.last_name }}</small>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if user.is_superuser %}
+                        <hr>
+                        <a href="{% url 'modify_film' id=film.id %}">Modify The film</a><hr>
+                        {% for director in directors %}
+                        {% if director.film.id == film.id %}
+                        <a href="{% url 'modify_dir' id=film.id %}">Modify The director</a><hr>
+                        {% endif %}
+                        {% endfor %}
+                        <form action="{% url 'delete_film' id=film.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Delete the film<span class="fa fa-trash fa-pull-left" ></span></button>
+                        </form>
+                        {% endif %}
+                        <a href="{% url 'comment_film' id=film.id %}"><button class="btn btn-primary">Comments<span class="fa fa-comment fa-pull-right" ></span></button></a>
+                    </div>
+                </div>
+                <p class="mt-3 w-100 float-left text-center"><strong>{{ film.description }}</strong></p>
+    		</div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

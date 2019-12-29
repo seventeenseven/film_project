@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Comment Films</title>
+    {% load crispy_forms_tags %}
+    {% endblock %}
+
+{% block content %}
+<div>
+    <div>
+    {% if messages %}
+        <ul>
+            {% for msg in messages %}
+                <li {% if msg.tags %} class="alert alert-{{ msg.tags }}"{% endif %}>{{ msg }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col col-md-7">
+                <div class="row">
+                    <div class="col col-md-4">
+                        Rates:
+                        {% if rate == 1 %}
+                        <span class="fa fa-star" ></span>
+                        {% elif rate == 2 %}
+                        {% for n in 'ab' %}
+                        <span class="fa fa-star" ></span>
+                        {% endfor %}
+                        {% elif rate == 3 %}
+                        {% for n in 'abc' %}
+                        <span class="fa fa-star" ></span>
+                        {% endfor %}
+                        {% elif rate == 4 %}
+                        {% for n in 'abcd' %}
+                        <span class="fa fa-star" ></span>
+                        {% endfor %}
+                        {% elif rate > 5 %}
+                        {% for n in 'abcde' %}
+                        <span class="fa fa-star" ></span>
+                        {% endfor %}
+                        {%else%}
+                        <h3>No rates yet !</h3>
+                        {% endif %}
+                    </div>
+                </div>
+                <div style="background-image:url('{{ film.cover_image.url }}');
+                                                                background-repeat:no-repeat;
+                                                                background-size:100%;
+                                                                position:relative;
+                                                                z-index: -1;
+                                                                -webkit-filter: blur(px);
+                                                                 height: 100%;"></div>
+                <h2><br>List of the comment for " {{ film.title }} "</h2><br>
+
+                {% for comment in comments %}
+                <div style="margin-bottom:20px;">
+                    <br>{{ comment.user.username }} : {{ comment.content }}
+                    {% if comment.user_id == user.id %}
+                       <a href="{% url 'delete_comment' id=comment.id %}" style="float:right"><button class="btn btn-warning"><span class="fa fa-trash" ></span></button></a>
+                    {% endif %}
+                </div><hr>
+                {% endfor %}
+            </div>
+            {% if user.is_authenticated %}
+            <div class="col col-md-4" style="margin-bottom:20px; float:right">
+                <h2>Add a comment to the film " {{ film.title }} "</h2><br>
+                <form method="post">
+                    {% csrf_token %}
+	                {{ form|crispy }}
+                    <input type="submit" value="ADD" class="btn btn-warning">
+                </form>
+            </div>
+            {% else %}
+            <div class="col col-md-4"><br> LOGIN OR REGISTER <br> if you want to add a comment to this film <br> And Rate this film</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

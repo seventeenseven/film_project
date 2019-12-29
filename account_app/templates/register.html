@@ -1,0 +1,29 @@
+{% extends 'login.html' %}
+{% block title %}
+    <title>Register Page</title>
+{% load crispy_forms_tags %}
+{% endblock %}
+
+{% block card-title %}
+    <h3>Sign UP</h3>
+{% endblock %}
+
+{% block card-body %}
+    <div class="card-body">
+        <form role="form" method="post" action="">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block"> Create Account  </button>
+            </div> <!-- form-group// -->
+        </form>
+    </div>
+{% endblock%}
+
+{% block card-footer %}
+<div class="card-footer">
+    <div class="d-flex justify-content-center links">
+        Have an account?<a href="{% url 'login' %}">Log In</a>
+    </div>
+</div>
+{% endblock%}

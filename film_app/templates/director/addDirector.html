@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Add a director</title>
+    {% load crispy_forms_tags %}
+    {% endblock %}
+
+{% block content %}
+    <div>
+    {% if messages %}
+        <ul>
+            {% for msg in messages %}
+                <li {% if msg.tags %} class="alert alert-{{ msg.tags }}"{% endif %}>{{ msg }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col col-md-7">
+                <h2>Add a director</h2><br>
+                <form method="post">
+                    {% csrf_token %}
+	                {{ form|crispy }}
+                    <input type="submit" value="Save">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
